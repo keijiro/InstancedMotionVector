@@ -9,6 +9,9 @@
 
     #include "UnityCG.cginc"
 
+    float _CurrentTime;
+    float _DeltaTime;
+
     float4 Animate(float4 vp, uint id, float t)
     {
         t = 0.3 * t + 0.1 * (float)id;
@@ -54,8 +57,8 @@
 
             Varyings Vertex(Attributes input)
             {
-                float4 vp0 = Animate(input.position, input.instanceID, _Time.y - unity_DeltaTime.x);
-                float4 vp1 = Animate(input.position, input.instanceID, _Time.y);
+                float4 vp0 = Animate(input.position, input.instanceID, _CurrentTime - _DeltaTime);
+                float4 vp1 = Animate(input.position, input.instanceID, _CurrentTime);
 
                 Varyings o;
                 o.position = UnityObjectToClipPos(vp1);
@@ -103,7 +106,7 @@
         void Vertex(inout appdata_full data)
         {
         #ifdef UNITY_PROCEDURAL_INSTANCING_ENABLED
-            data.vertex = Animate(data.vertex, unity_InstanceID, _Time.y);
+            data.vertex = Animate(data.vertex, unity_InstanceID, _CurrentTime);
         #endif
         }
 
