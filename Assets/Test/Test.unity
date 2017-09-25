@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -211,13 +211,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _source: 2
-  _blendRatio: 0.104
+  _blendRatio: 0.5
   _useDepthNormals: 0
   _depthRepeat: 1
   _validateNormals: 0
   _motionOverlayAmplitude: 10
   _motionVectorsAmplitude: 1
-  _motionVectorsResolution: 40
+  _motionVectorsResolution: 64
   _shader: {fileID: 4800000, guid: f104e85b3463c2748a02d2f07582fa63, type: 3}
 --- !u!114 &516571915
 MonoBehaviour:
@@ -301,7 +301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e635ef313f781b3449d4d27b980eceec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  _mesh: {fileID: 4300002, guid: 8c3e5f129567f2f4f81c3e05eb790000, type: 3}
   _texture: {fileID: 2800000, guid: b7a0602fbdd9f634589761fffc6296e0, type: 3}
   _shader: {fileID: 4800000, guid: e70122535f0a0274e9a7e7be4920a969, type: 3}
 --- !u!4 &875488762

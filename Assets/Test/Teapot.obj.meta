@@ -1,15 +1,22 @@
 fileFormatVersion: 2
-guid: f0cc466a0a72d4047853de39ee4c0a16
-timeCreated: 1506381305
+guid: 8c3e5f129567f2f4f81c3e05eb790000
+timeCreated: 1506345619
 licenseType: Pro
 ModelImporter:
   serializedVersion: 21
   fileIDToRecycleName:
-    100000: //RootNode
-    400000: //RootNode
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: Teapot
+    100000: default
+    100002: //RootNode
+    100004: Teapot
+    400000: default
+    400002: //RootNode
+    400004: Teapot
+    2300000: default
+    2300002: Teapot
+    3300000: default
+    3300002: Teapot
+    4300000: default
+    4300002: Teapot
   materials:
     importMaterials: 0
     materialName: 0
@@ -60,7 +67,7 @@ ModelImporter:
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
-  importAnimation: 0
+  importAnimation: 1
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2
