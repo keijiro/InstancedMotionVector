@@ -7,6 +7,7 @@ public class InstancedMeshDrawer : MonoBehaviour
     #region Internal resources
 
     [SerializeField, HideInInspector] Mesh _mesh;
+    [SerializeField, HideInInspector] Texture2D _texture;
     [SerializeField, HideInInspector] Shader _shader;
 
     #endregion
@@ -19,6 +20,9 @@ public class InstancedMeshDrawer : MonoBehaviour
 
     // Command buffer used for rendering motion vectors
     CommandBuffer _motionVectorsPass;
+
+    // Local-to-world matrix history
+    Matrix4x4 _previousLocalToWorld;
 
     // Huge bounding box
     readonly Bounds kBounds = new Bounds(Vector3.zero, Vector3.one * 10000);
@@ -52,6 +56,11 @@ public class InstancedMeshDrawer : MonoBehaviour
             _motionVectorsPass.Dispose();
     }
 
+    void Start()
+    {
+        _previousLocalToWorld = transform.localToWorldMatrix;
+    }
+
     void Update()
     {
         DoLazyInitialization();
@@ -60,8 +69,11 @@ public class InstancedMeshDrawer : MonoBehaviour
         _material.SetFloat("_DeltaTime", Time.deltaTime);
         _material.SetMatrix("_LocalToWorld", transform.localToWorldMatrix);
         _material.SetMatrix("_WorldToLocal", transform.worldToLocalMatrix);
+        _material.SetMatrix("_PreviousM", _previousLocalToWorld);
 
         Graphics.DrawMeshInstancedIndirect(_mesh, 0, _material, kBounds, _drawArgsBuffer);
+
+        _previousLocalToWorld = transform.localToWorldMatrix;
     }
 
     void OnRenderObject()
@@ -83,12 +95,13 @@ public class InstancedMeshDrawer : MonoBehaviour
         {
             _material = new Material(_shader);
             _material.hideFlags = HideFlags.DontSave;
+            _material.SetTexture("_MainTex", _texture);
         }
 
         if (_drawArgsBuffer == null)
         {
             _drawArgsBuffer = new ComputeBuffer(1, 5 * sizeof(uint), ComputeBufferType.IndirectArguments);
-            _drawArgsBuffer.SetData(new uint[5] { (uint)_mesh.GetIndexCount(0), 30, 0, 0, 0 });
+            _drawArgsBuffer.SetData(new uint[5] { (uint)_mesh.GetIndexCount(0), 200, 0, 0, 0 });
         }
 
         if (_motionVectorsPass == null)

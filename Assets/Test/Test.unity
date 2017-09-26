@@ -159,7 +159,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.35980755, g: 0.37715364, b: 0.4044118, a: 0}
+  m_BackGroundColor: {r: 0.30687717, g: 0.31049356, b: 0.31617647, a: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -168,7 +168,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 20
+  field of view: 40
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -180,7 +180,7 @@ Camera:
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
-  m_AllowMSAA: 0
+  m_AllowMSAA: 1
   m_ForceIntoRT: 1
   m_OcclusionCulling: 0
   m_StereoConvergence: 10
@@ -205,13 +205,13 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 516571908}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3a1e83ab3c6c9d7468fff9be485a1390, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _source: 2
-  _blendRatio: 0.056
+  _blendRatio: 0.104
   _useDepthNormals: 0
   _depthRepeat: 1
   _validateNormals: 0
@@ -264,7 +264,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e635ef313f781b3449d4d27b980eceec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  _mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  _texture: {fileID: 2800000, guid: b7a0602fbdd9f634589761fffc6296e0, type: 3}
   _shader: {fileID: 4800000, guid: e70122535f0a0274e9a7e7be4920a969, type: 3}
 --- !u!4 &875488762
 Transform:
@@ -304,7 +305,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 8
   m_Type: 1
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 1, g: 0.9763271, b: 0.9117647, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -314,9 +315,9 @@ Light:
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
+    m_Bias: 0.03
+    m_NormalBias: 0
+    m_NearPlane: 0.1
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
