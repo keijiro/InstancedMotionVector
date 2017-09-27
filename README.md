@@ -7,8 +7,9 @@ InstancedMotionVector
 This is an example that shows how to support rendering motion vectors within
 *indirect instanced drawing* of Unity.
 
-(In this document, the term *"indirect instanced drawing"* refers to drawing a
-mesh with the GPU instancing by using [Graphics.DrawMeshInstancedIndirect].)
+(In this document, the term *"indirect instanced drawing"* refers to drawing
+instanced geometries with using the indirect drawing API -- specifically using
+[Graphics.DrawMeshInstancedIndirect].)
 
 [Graphics.DrawMeshInstancedIndirect]: https://docs.unity3d.com/ScriptReference/Graphics.DrawMeshInstancedIndirect.html
 
@@ -17,16 +18,17 @@ System requirements
 
 - Unity 2017.2 or later
 
-How to support motion vectors within indirect shaders
------------------------------------------------------
+How to support motion vectors within indirect instanced drawing
+---------------------------------------------------------------
 
 - Write the `MotionVectors` light mode pass for the custom shader. It's
   recommended to use the first pass of the subshader to make it easy to refer
-  from command buffers. [Example][Example1]
+  from command buffers. ⇒ [Example][Example1]
 
-- Implement `OnRenderObject` and manually invoke the `MotionVectors` pass with
-  using a command buffer. [BuiltinRenderTextureType.MotionVectors] can be used
-  to set the motion vectors texture as a render target. [Example][Example2]
+- Implement the `OnRenderObject` method and manually invoke the `MotionVectors`
+  pass with using a command buffer. [BuiltinRenderTextureType.MotionVectors]
+  can be used to set the motion vectors texture as a render target. ⇒ 
+  [Example][Example2]
 
 [Example1]: (https://github.com/keijiro/InstancedMotionVector/blob/master/Assets/InstancedMotionVector/InstancedMesh.shader#L13)
 [Example2]: (https://github.com/keijiro/InstancedMotionVector/blob/master/Assets/InstancedMotionVector/InstancedMeshDrawer.cs#L116)
