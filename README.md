@@ -30,8 +30,8 @@ How to support motion vectors within indirect instanced drawing
   can be used to set the motion vectors texture as a render target. ⇒ 
   [Example][Example2]
 
-[Example1]: (https://github.com/keijiro/InstancedMotionVector/blob/master/Assets/InstancedMotionVector/InstancedMesh.shader#L13)
-[Example2]: (https://github.com/keijiro/InstancedMotionVector/blob/master/Assets/InstancedMotionVector/InstancedMeshDrawer.cs#L116)
+[Example1]: https://github.com/keijiro/InstancedMotionVector/blob/master/Assets/InstancedMotionVector/InstancedMesh.shader#L13
+[Example2]: https://github.com/keijiro/InstancedMotionVector/blob/master/Assets/InstancedMotionVector/InstancedMeshDrawer.cs#L116
 [BuiltinRenderTextureType.MotionVectors]: https://docs.unity3d.com/ScriptReference/Rendering.BuiltinRenderTextureType.MotionVectors.html
 
 License
