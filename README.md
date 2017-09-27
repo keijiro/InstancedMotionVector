@@ -22,11 +22,11 @@ How to support motion vectors within indirect shaders
 
 - Write the `MotionVectors` light mode pass for the custom shader. It's
   recommended to use the first pass of the subshader to make it easy to refer
-  from command buffers. [[Example]][Example1]
+  from command buffers. [Example][Example1]
 
 - Implement `OnRenderObject` and manually invoke the `MotionVectors` pass with
   using a command buffer. [BuiltinRenderTextureType.MotionVectors] can be used
-  to set the motion vectors texture as a render target. [[Example]][Example2]
+  to set the motion vectors texture as a render target. [Example][Example2]
 
 [Example1]: (https://github.com/keijiro/InstancedMotionVector/blob/master/Assets/InstancedMotionVector/InstancedMesh.shader#L13)
 [Example2]: (https://github.com/keijiro/InstancedMotionVector/blob/master/Assets/InstancedMotionVector/InstancedMeshDrawer.cs#L116)
