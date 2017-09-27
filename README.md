@@ -4,8 +4,8 @@ InstancedMotionVector
 ![screenshot](https://i.imgur.com/QUcShdfm.png)
 ![screenshot](https://i.imgur.com/fpxRPrFm.png)
 
-This is an example that shows how to support rendering motion vectors within
-*indirect instanced drawing* of Unity.
+This is an example that shows how to support rendering per-instance motion
+vectors within *indirect instanced drawing* of Unity.
 
 (In this document, the term *"indirect instanced drawing"* refers to drawing
 instanced geometries with using the indirect drawing API -- specifically using
@@ -17,6 +17,11 @@ System requirements
 -------------------
 
 - Unity 2017.2 or later
+
+This example uses [BuiltinRenderTextureType.MotionVectors] that is newly
+introduce in Unity 2017.2, so that it only runs on 2017.2 or later versions.
+
+[BuiltinRenderTextureType.MotionVectors]: https://docs.unity3d.com/ScriptReference/Rendering.BuiltinRenderTextureType.MotionVectors.html
 
 How to support motion vectors within indirect instanced drawing
 ---------------------------------------------------------------
@@ -32,7 +37,6 @@ How to support motion vectors within indirect instanced drawing
 
 [Example1]: https://github.com/keijiro/InstancedMotionVector/blob/master/Assets/InstancedMotionVector/InstancedMesh.shader#L13
 [Example2]: https://github.com/keijiro/InstancedMotionVector/blob/master/Assets/InstancedMotionVector/InstancedMeshDrawer.cs#L116
-[BuiltinRenderTextureType.MotionVectors]: https://docs.unity3d.com/ScriptReference/Rendering.BuiltinRenderTextureType.MotionVectors.html
 
 License
 -------
