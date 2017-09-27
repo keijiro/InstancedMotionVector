@@ -130,7 +130,10 @@ public class InstancedMeshDrawer : MonoBehaviour
 
             // Build and execute the motion vector rendering pass.
             _motionVectorsPass.Clear();
-            _motionVectorsPass.SetRenderTarget(BuiltinRenderTextureType.MotionVectors);
+            if (camera.allowMSAA && camera.actualRenderingPath == RenderingPath.Forward)
+                _motionVectorsPass.SetRenderTarget(BuiltinRenderTextureType.MotionVectors);
+            else
+                _motionVectorsPass.SetRenderTarget(BuiltinRenderTextureType.MotionVectors, BuiltinRenderTextureType.CameraTarget);
             _motionVectorsPass.DrawMeshInstancedIndirect(_mesh, 0, _material, 0, _drawArgsBuffer, 0, _shaderSheet);
             Graphics.ExecuteCommandBuffer(_motionVectorsPass);
         }
