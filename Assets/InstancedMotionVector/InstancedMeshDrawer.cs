@@ -4,18 +4,28 @@ using UnityEngine.Rendering;
 [ExecuteInEditMode]
 public class InstancedMeshDrawer : MonoBehaviour
 {
+    #region Editable attributes
+
+    [SerializeField] Mesh _mesh;
+    [SerializeField] Texture2D _texture;
+    [SerializeField] int _instanceCount = 100;
+
+    #endregion
+
     #region Internal resources
 
-    [SerializeField, HideInInspector] Mesh _mesh;
-    [SerializeField, HideInInspector] Texture2D _texture;
     [SerializeField, HideInInspector] Shader _shader;
 
     #endregion
 
     #region Internal objects
 
-    // Temporary objects for instanced rendering
+    // Material and property sheet for the shader
     Material _material;
+    MaterialPropertyBlock _shaderSheet;
+
+    // Indirect draw arguments
+    uint [] _drawArgs = new uint [5];
     ComputeBuffer _drawArgsBuffer;
 
     // Command buffer used for rendering motion vectors
@@ -30,6 +40,11 @@ public class InstancedMeshDrawer : MonoBehaviour
     #endregion
 
     #region MonoBehaviour methods
+
+    void OnValidate()
+    {
+        _instanceCount = Mathf.Clamp(_instanceCount, 1, 65535);
+    }
 
     void OnDisable()
     {
@@ -63,24 +78,60 @@ public class InstancedMeshDrawer : MonoBehaviour
 
     void Update()
     {
+        if (_mesh == null) return;
+
         DoLazyInitialization();
 
-        _material.SetFloat("_CurrentTime", Application.isPlaying ? Time.time : 0);
-        _material.SetFloat("_DeltaTime", Time.deltaTime);
-        _material.SetMatrix("_LocalToWorld", transform.localToWorldMatrix);
-        _material.SetMatrix("_WorldToLocal", transform.worldToLocalMatrix);
-        _material.SetMatrix("_PreviousM", _previousLocalToWorld);
+        // Update the shader property sheet.
+        _shaderSheet.Clear();
+        _shaderSheet.SetTexture("_MainTex", _texture);
 
-        Graphics.DrawMeshInstancedIndirect(_mesh, 0, _material, kBounds, _drawArgsBuffer);
+        if (Application.isPlaying)
+        {
+            _shaderSheet.SetFloat("_CurrentTime", Time.time);
+            _shaderSheet.SetFloat("_DeltaTime", Time.deltaTime);
+        }
+        else
+        {
+            _shaderSheet.SetFloat("_CurrentTime", 0);
+            _shaderSheet.SetFloat("_DeltaTime", 1.0f / 60);
+        }
 
+        _shaderSheet.SetMatrix("_LocalToWorld", transform.localToWorldMatrix);
+        _shaderSheet.SetMatrix("_WorldToLocal", transform.worldToLocalMatrix);
+        _shaderSheet.SetMatrix("_PreviousM", _previousLocalToWorld);
+
+        // Update the indirect draw arguments.
+        _drawArgs[0] = _mesh.GetIndexCount(0);
+        _drawArgs[1] = (uint)_instanceCount;
+        _drawArgsBuffer.SetData(_drawArgs);
+
+        // Instanced indirect draw call
+        Graphics.DrawMeshInstancedIndirect(_mesh, 0, _material, kBounds, _drawArgsBuffer, 0, _shaderSheet);
+
+        // Update the internal state.
         _previousLocalToWorld = transform.localToWorldMatrix;
     }
 
     void OnRenderObject()
     {
+        if (_mesh == null) return;
+
+        var camera = Camera.current;
+
         if (_motionVectorsPass != null &&
-            (Camera.current.depthTextureMode & DepthTextureMode.MotionVectors) != 0)
+            (camera.depthTextureMode & DepthTextureMode.MotionVectors) != 0)
         {
+            var nonJitteredVP = GL.GetGPUProjectionMatrix(camera.projectionMatrix, true) * camera.worldToCameraMatrix;
+
+            // Set the per-camera properties.
+            _shaderSheet.SetMatrix("_PreviousVP", camera.previousViewProjectionMatrix);
+            _shaderSheet.SetMatrix("_NonJitteredVP", nonJitteredVP);
+
+            // Build and execute the motion vector rendering pass.
+            _motionVectorsPass.Clear();
+            _motionVectorsPass.SetRenderTarget(BuiltinRenderTextureType.MotionVectors);
+            _motionVectorsPass.DrawMeshInstancedIndirect(_mesh, 0, _material, 0, _drawArgsBuffer, 0, _shaderSheet);
             Graphics.ExecuteCommandBuffer(_motionVectorsPass);
         }
     }
@@ -95,21 +146,18 @@ public class InstancedMeshDrawer : MonoBehaviour
         {
             _material = new Material(_shader);
             _material.hideFlags = HideFlags.DontSave;
-            _material.SetTexture("_MainTex", _texture);
         }
 
+        if (_shaderSheet == null)
+            _shaderSheet = new MaterialPropertyBlock();
+
         if (_drawArgsBuffer == null)
-        {
             _drawArgsBuffer = new ComputeBuffer(1, 5 * sizeof(uint), ComputeBufferType.IndirectArguments);
-            _drawArgsBuffer.SetData(new uint[5] { (uint)_mesh.GetIndexCount(0), 200, 0, 0, 0 });
-        }
 
         if (_motionVectorsPass == null)
         {
             _motionVectorsPass = new CommandBuffer();
             _motionVectorsPass.name = "Motion Vectors";
-            _motionVectorsPass.SetRenderTarget(BuiltinRenderTextureType.MotionVectors);
-            _motionVectorsPass.DrawMeshInstancedIndirect(_mesh, 0, _material, 0, _drawArgsBuffer);
         }
     }
 
